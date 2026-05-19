@@ -1,9 +1,0 @@
-Generate comprehensive NCERT style MCQs
-from the provided Class 10 Mathematics
-Polynomials chapter.
-Requirements:
-- Cover complete syllabus
-- Include easy medium hard questions
-- 4 options
-- Mention correct answer
-- Avoid duplicates

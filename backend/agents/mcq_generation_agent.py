@@ -1,28 +1,39 @@
 import os
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
+
 load_dotenv()
+
 llm = ChatGoogleGenerativeAI(
     model="gemini-3-flash-preview",
     google_api_key=os.getenv("GEMINI_API_KEY"),
     temperature=1.0
 )
+
 def generate_mcqs(vector_store):
+
     retriever = vector_store.as_retriever(
         search_kwargs={
-            "k": 30
+            "k": 50
         }
     )
+
     docs = retriever.invoke(
-        "Complete NCERT Class 10 Polynomials chapter including all concepts, graphs, exercises, examples, tables and figures"
+        "Complete NCERT Class 10 Polynomials chapter including all concepts, graphs, exercises, examples, tables, units and figures"
     )
+
     context = ""
+
     for doc in docs:
+
         context += doc.page_content + "\n"
+
     prompt = f"""
+
     Generate a comprehensive MCQ question bank
     from the NCERT Class 10 Mathematics
     chapter Polynomials.
+
     Instructions:
 
     - Generate a COMPLETE balanced MCQ question bank
@@ -31,6 +42,12 @@ def generate_mcqs(vector_store):
     - Cover ALL exercises
     - Cover ALL examples
     - Cover graphs, tables and figures
+    - Generate MCQs unit-wise/topic-wise
+    - Cover every major topic separately
+    - Maintain balanced distribution across all units
+    - Generate enough MCQs for each unit
+    - Focus more on conceptual and exercise-based questions
+    - Keep graph questions limited
 
     - Include a balanced mix of:
       - Conceptual questions
@@ -49,18 +66,37 @@ def generate_mcqs(vector_store):
     - Do NOT focus only on formulas
 
     - Maintain balanced distribution across all topics
-    
-    - Generate a massive, comprehensive, and high-quality MCQ question bank covering the entire chapter thoroughly.
-    
-    - Generate as many unique, non-repetitive questions as possible (aiming for maximum coverage) so that no topic, exercise, example, graph, figure, or formula is left out.
-    
-    - Ensure a balanced distribution across all concepts:
+
+    - Generate a massive, comprehensive,
+      and high-quality MCQ question bank
+      covering the entire chapter thoroughly
+
+    - Generate enough MCQs to achieve
+      maximum possible chapter coverage
+
+    - Continue generating questions until
+      all major concepts, exercises,
+      examples, graphs and tables are covered
+
+    - Do not stop generation early
+
+    - Prioritize complete textbook coverage
+      over short output
+
+    - Generate as many unique,
+      non-repetitive questions as possible
+      so that no topic, exercise, example,
+      graph, figure, or formula is left out
+
+    - Ensure a balanced distribution across:
       - Conceptual/theory-based MCQs
       - Calculation/formula/exercise-based MCQs
       - Graph, figure, or table interpretation MCQs
-    
-    - Number every question consecutively starting from Q1.
-    - Match NCERT standard and rigour.
+
+    - Number every question consecutively
+      starting from Q1
+
+    - Match NCERT standard and rigour
 
     IMPORTANT RULES FOR GRAPH QUESTIONS:
 
@@ -116,22 +152,41 @@ def generate_mcqs(vector_store):
     Chapter Content:
 
     {context}
+
     """
-    response = llm.invoke(prompt)
+
+    response = llm.invoke(
+        prompt,
+        max_output_tokens=8192
+    )
+
     content = response.content
+
     if isinstance(content, list):
+
         parts = []
+
         for part in content:
+
             if isinstance(part, str):
+
                 parts.append(part)
+
             elif isinstance(part, dict):
+
                 parts.append(
                     part.get("text", "")
                     or part.get("content", "")
                 )
+
             elif hasattr(part, "text"):
+
                 parts.append(part.text)
+
             elif hasattr(part, "content"):
+
                 parts.append(part.content)
+
         return "".join(parts)
+
     return str(content)
