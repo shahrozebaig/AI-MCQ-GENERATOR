@@ -1,0 +1,6 @@
+Generate correct answers and brief, step-by-step explanations for the provided MCQs.
+Requirements:
+- Focus on the problem-solving method (how to solve the question)
+- Simple, brief bullet points (using dashes '-')
+- Concise and brief explanation, not detailed or wordy
+- NCERT level

@@ -1,0 +1,37 @@
+# Byte-compiled / optimized / DLL archive files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+myenv/
+venv/
+ENV/
+env/
+
+# Local environment configuration / secrets
+.env
+.env.local
+.env.*.local
+
+# Project specific temporary and generated files
+data/raw/*
+!data/raw/.gitkeep
+outputs/*
+!outputs/.gitkeep
+
+# Editor specific configurations
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Operating System specific files
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db

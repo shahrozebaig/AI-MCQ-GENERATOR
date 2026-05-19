@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+python-multipart
+langchain
+langchain-community
+langchain-google-genai
+sentence-transformers
+faiss-cpu
+pymupdf
+pdfplumber
+reportlab
+python-dotenv
+matplotlib
+numpy
