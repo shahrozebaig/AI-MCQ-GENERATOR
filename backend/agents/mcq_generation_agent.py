@@ -22,6 +22,22 @@ def generate_mcqs(vector_store):
         "Complete NCERT Class 10 Polynomials chapter including all concepts, graphs, exercises, examples, tables, units and figures"
     )
 
+    os.makedirs("data", exist_ok=True)
+
+    with open(
+        "data/retrieved_chunks.txt",
+        "w",
+        encoding="utf-8"
+    ) as file:
+
+        for i, doc in enumerate(docs):
+
+            file.write(f"\nRetrieved Chunk {i+1}\n\n")
+
+            file.write(doc.page_content)
+
+            file.write("\n" + "=" * 100 + "\n")
+
     context = ""
 
     for doc in docs:
@@ -60,6 +76,19 @@ def generate_mcqs(vector_store):
       - Factorization questions
       - HOTS questions
       - Application-based questions
+
+    - Generate proper NCERT-style table-based MCQs
+
+    - Include questions based on:
+      - x and p(x) value tables
+      - observation tables
+      - polynomial value tables
+      - zero identification tables
+      - pattern-based tables
+
+    - Create proper formatted tables inside questions whenever needed
+
+    - Table questions must be generated dynamically
 
     - Do NOT focus only on graphs
     - Do NOT focus only on tables
